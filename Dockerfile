@@ -1,18 +1,19 @@
-FROM node:alpine
+FROM node:10
 
-#ENV FRONT_URL=http://192.168.121.139:8081
+# Create app directory
+WORKDIR /usr/src/app
 
-WORKDIR /home/node/webapp
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
 
-COPY package.json .
 RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
 
+# Bundle app source
 COPY . .
 
-#EXPOSE 8000
-
-# This, again, fixes the problem
-# RUN chown -R node: /home/node/webapp
-USER node
-CMD ["npm", "start"]
-
+EXPOSE 8080
+CMD [ "node", "server.js" ]
